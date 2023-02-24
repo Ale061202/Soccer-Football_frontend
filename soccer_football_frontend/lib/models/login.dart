@@ -62,3 +62,28 @@ class LoginRequest {
     return data;
   }
 }
+
+class SignUpRequest {
+  String? username;
+  String? password;
+  String? first_name;
+  String? last_name;
+
+  SignUpRequest({this.username, this.password, this.first_name, this.last_name});
+
+  SignUpRequest.fromJson(Map<String, dynamic> json) {
+    username = json['username'];
+    password = json['password'];
+    first_name = json['first_name'];
+    last_name = json['last_name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['username'] = username;
+    data['password'] = password;
+    data['first_name'] = first_name;
+    data['last_name'] = last_name;
+    return data;
+  }
+}

@@ -4,7 +4,10 @@ import 'package:soccer_football_frontend/blocs/authentication/authentication.dar
 import 'package:soccer_football_frontend/config/locator.dart';
 import 'package:soccer_football_frontend/pages/home_page.dart';
 import 'package:soccer_football_frontend/pages/login_page.dart';
-import 'package:soccer_football_frontend/services/authentication_service.dart';
+import 'package:soccer_football_frontend/repositories/admin_repository.dart';
+import 'package:soccer_football_frontend/repositories/post_repository.dart';
+import 'package:soccer_football_frontend/repositories/search_repository.dart';
+import 'package:soccer_football_frontend/services/services.dart';
 
 void main() {
   //WidgetsFlutterBinding.ensureInitialized();
@@ -12,28 +15,22 @@ void main() {
   setupAsyncDependencies();
   configureDependencies();
   //await getIt.allReady();
-  
-    
-    runApp(BlocProvider<AuthenticationBloc>(
-        create: (context) {
-          //GlobalContext.ctx = context;
-          final authService = getIt<JwtAuthenticationService>();
-          return AuthenticationBloc(authService)..add(AppLoaded());
-        },
-        child: MyApp(),
-      ));
 
+  runApp(BlocProvider<AuthenticationBloc>(
+    create: (context) {
+      //GlobalContext.ctx = context;
+      final authService = getIt<JwtAuthenticationService>();
+      return AuthenticationBloc(authService)..add(AppLoaded());
+    },
+    child: MyApp(),
+  ));
 }
 
 class GlobalContext {
-  
   static late BuildContext ctx;
-
 }
 
-
 class MyApp extends StatelessWidget {
-
   //static late  AuthenticationBloc _authBloc;
 
   static late MyApp _instance;
@@ -45,13 +42,6 @@ class MyApp extends StatelessWidget {
       authBloc..add(SessionExpiredEvent());
       return _instance;
     });
-    /*return MaterialPageRoute<void>(builder: (context) {
-      return BlocProvider<AuthenticationBloc>(create: (context) {
-        final authService = getIt<JwtAuthenticationService>();
-        return AuthenticationBloc(authService)..add(SessionExpiredEvent());
-      }, 
-      child: MyApp(),);
-    });*/
   }
 
   MyApp() {
@@ -62,23 +52,26 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     //GlobalContext.ctx = context;
     return MaterialApp(
-      title: 'Authentication Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.teal,
-      ),
-      home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-        builder: (context, state) {
-          GlobalContext.ctx = context;
-          if (state is AuthenticationAuthenticated) {
-            // show home page
-            return HomePage(
-              user: state.user,
-            );
-          }
-          // otherwise show login page
-          return LoginPage();
-        },
-      ),
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'Authentication Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.teal,
+        ),
+        home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+          builder: (context, state) {
+            GlobalContext.ctx = context;
+            if (state is AuthenticationAuthenticated) {
+              // show home page with authenticated user
+              return HomePage(
+                postRepository: PostRepository(),
+                searchRepositories: SearchRepositories(),
+                adminRepository: AdminRepository(),
+                user: state.user, // pass authenticated user
+              );
+            }
+            return LoginPage();
+          },
+        )
+        );
   }
 }

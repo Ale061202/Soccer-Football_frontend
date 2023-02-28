@@ -7,15 +7,13 @@ import 'package:soccer_football_frontend/services/localstorage_service.dart';
 
 abstract class AuthenticationService {
   Future<User?> getCurrentUser();
-  Future<User> signInWithEmailAndPassword(String username, String password);
-  Future<User> signUpWithAllData(String username, String password, String first_name, String last_name);
+  Future<User> signInWithUserNameAndPassword(String username, String password);
   Future<void> signOut();
 }
 
 @Order(2)
 @singleton
 class JwtAuthenticationService extends AuthenticationService {
-
   late AuthenticationRepository _authenticationRepository;
   late LocalStorageService _localStorageService;
   late UserRepository _userRepository;
@@ -23,15 +21,16 @@ class JwtAuthenticationService extends AuthenticationService {
   JwtAuthenticationService() {
     _authenticationRepository = getIt<AuthenticationRepository>();
     _userRepository = getIt<UserRepository>();
-    GetIt.I.getAsync<LocalStorageService>().then((value) => _localStorageService = value);
+    GetIt.I
+        .getAsync<LocalStorageService>()
+        .then((value) => _localStorageService = value);
   }
-
 
   @override
   Future<User?> getCurrentUser() async {
-    //String? loggedUser = _localStorageService.getFromDisk("user");
     print("get current user");
-    String? token = _localStorageService.getFromDisk("user_token");
+    String? token = _localStorageService.getFromDisk('user_token');
+    print(token);
     if (token != null) {
       UserResponse response = await _userRepository.me();
       return response;
@@ -40,18 +39,19 @@ class JwtAuthenticationService extends AuthenticationService {
   }
 
   @override
-  Future<User> signInWithEmailAndPassword(String username, String password) async {
-    LoginResponse response = await _authenticationRepository.doLogin(username, password);
-    //await _localStorageService.saveToDisk('user', jsonEncode(response.toJson()));
+  Future<User> signInWithUserNameAndPassword(
+      String username, String password) async {
+    User response = await _authenticationRepository.doLogin(username, password);
     await _localStorageService.saveToDisk('user_token', response.token);
-    return User.fromLoginResponse(response);
-  }
-
-  @override
-  Future<User> signUpWithAllData(String username, String password, String first_name, String last_name) async {
-    LoginResponse response = await _authenticationRepository.doSignUp(username, password, first_name, last_name);
-    await _localStorageService.saveToDisk('user_token', response.token);
-    return User.fromLoginResponse(response);
+    return User(
+        avatar: response.avatar,
+        username: response.username,
+        email: response.email,
+        phone: response.phone,
+        birthday: response.birthday,
+        posts: response.posts,
+        roles: response.roles,
+        id: response.id);
   }
 
   @override
@@ -59,5 +59,4 @@ class JwtAuthenticationService extends AuthenticationService {
     print("borrando token");
     await _localStorageService.deleteFromDisk("user_token");
   }
-
 }

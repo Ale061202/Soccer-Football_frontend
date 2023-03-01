@@ -88,15 +88,6 @@ class _HomePageState extends State<HomePage> {
                     : Colors.grey),
               label: 'Profile',
               backgroundColor: Colors.green),
-          if (widget.user.roles?.contains('ADMIN') ?? false)
-            BottomNavigationBarItem(
-              icon: Icon(Icons.admin_panel_settings,
-                  color: _selectedIndex == 4
-                    ? Colors.white
-                    : Colors.grey),
-              label: 'Search',
-              backgroundColor: Colors.green,
-            ),
         ],
         onTap: (index) {
           setState(() {

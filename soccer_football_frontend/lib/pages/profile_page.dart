@@ -25,7 +25,6 @@ class ProfileScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           '@${user.username}',
-          // ignore: prefer_const_constructors
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
@@ -34,49 +33,6 @@ class ProfileScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.white,
         elevation: 0.0,
-        actions: [
-          Text('Unsubscribe',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-              )),
-          IconButton(
-            icon: Icon(Icons.cancel, color: Colors.redAccent),
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text(
-                      "WARNING!",
-                      style: TextStyle(
-                          color: Colors.redAccent, fontWeight: FontWeight.bold),
-                    ),
-                    content: Text("Are you sure you want to unsubscribe?"),
-                    actions: [
-                      TextButton(
-                        child: Text("Cancel"),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      TextButton(
-                        child: Text("Unsubscribe"),
-                        onPressed: () {
-                          adminRepository.deleteUserOrMe('${user.id}');
-                          Future.delayed(Duration(seconds: 5), () {
-                            authBloc.add(UserLoggedOut());
-                          });
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-          ),
-        ],
       ),
       body: Column(
         children: [
@@ -87,25 +43,9 @@ class ProfileScreen extends StatelessWidget {
               children: [
                 Column(
                   children: [
-                    FutureBuilder<Image>(
-                      future: postRepository.getImage('${user.avatar}'),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return CircleAvatar(
-                            radius: 40.0,
-                            backgroundImage: snapshot.data!.image,
-                          );
-                        } else if (snapshot.hasError) {
-                          return Text('${snapshot.error}');
-                        } else {
-                          return CircularProgressIndicator();
-                        }
-                      },
-                    ),
                     SizedBox(height: 5.0),
                     Text(
                       '${user.username}',
-                      // ignore: prefer_const_constructors
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18.0,
@@ -169,17 +109,6 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-            child: Text(
-              '${user.birthday ?? ''}',
-              style: TextStyle(
-                  fontSize: 16.0,
-                  fontStyle: FontStyle.italic,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blueGrey),
             ),
           ),
           ElevatedButton(

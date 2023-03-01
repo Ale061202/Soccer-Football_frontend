@@ -136,7 +136,7 @@ class __SignInFormState extends State<_SignInForm> {
                       Padding(
                         padding: const EdgeInsets.only(top: 30),
                         child: Text(
-                          'PLAYFUTDAY',
+                          'Soccer & Football',
                           style: TextStyle(
                             fontSize: 35,
                             fontWeight: FontWeight.bold,
@@ -150,12 +150,12 @@ class __SignInFormState extends State<_SignInForm> {
                   SizedBox(height: 30),
                   TextFormField(
                     decoration: InputDecoration(
-                      labelText: 'Email',
+                      labelText: 'Username',
                       filled: true,
                       isDense: true,
                     ),
                     controller: _usernameController,
-                    keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType.name,
                     autocorrect: false,
                   ),
                   SizedBox(
@@ -460,22 +460,7 @@ class RegisterForm extends StatelessWidget {
                             filled: true,
                             fillColor: Colors.white,
                           ),
-                        ),
-                        const SizedBox(height: 20.0),
-                        TextFieldBlocBuilder(
-                          textFieldBloc: regFormBloc.birthday,
-                          keyboardType: TextInputType.datetime,
-                          autofillHints: const [
-                            AutofillHints.username,
-                          ],
-                          decoration: InputDecoration(
-                            labelText: 'Birthday',
-                            prefixIcon:
-                                const Icon(Icons.cake_outlined, color: Colors.green),
-                            filled: true,
-                            fillColor: Colors.white,
-                          ),
-                        ),
+                        ),                      
                         const SizedBox(height: 20.0),
                         TextFieldBlocBuilder(
                           textFieldBloc: regFormBloc.phone,

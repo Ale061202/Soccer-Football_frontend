@@ -94,7 +94,6 @@ class PostListItem extends StatelessWidget {
                   ),
                 ),
                 Visibility(
-                  visible: user.roles!.contains('ADMIN') || post.author == user.username,
                   child: Row(
                     children: [
                       IconButton(
@@ -204,7 +203,7 @@ class PostListItem extends StatelessWidget {
                         width: 8,
                       ),
                       Text(
-                        '${post.tag}',
+                        '${post}',
                         style: TextStyle(
                             fontSize: 16,
                             fontStyle: FontStyle.italic,

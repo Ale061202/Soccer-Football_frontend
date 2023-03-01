@@ -48,9 +48,7 @@ class JwtAuthenticationService extends AuthenticationService {
         username: response.username,
         email: response.email,
         phone: response.phone,
-        birthday: response.birthday,
         posts: response.posts,
-        roles: response.roles,
         id: response.id);
   }
 

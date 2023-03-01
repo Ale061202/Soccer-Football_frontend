@@ -25,24 +25,7 @@ class _NewPostState extends State<NewPost> {
         child: Form(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              const SizedBox(height: 12),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Tag',
-                  filled: true,
-                  isDense: true,
-                ),
-                keyboardType: TextInputType.text,
-                autocorrect: false,
-                maxLength: 50,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Tag is required.';
-                  }
-                  return null;
-                },
-              ),
+            children: <Widget>[              
               const SizedBox(height: 12),
               TextFormField(
                 decoration: InputDecoration(
@@ -59,7 +42,7 @@ class _NewPostState extends State<NewPost> {
                   return null;
                 },
               ),
-              const SizedBox(height: 12),
+              /*const SizedBox(height: 12),
               BlocBuilder<PhotoBloc, PhotoState>(
                 bloc: BlocProvider.of<PhotoBloc>(context),
                 builder: (context, state) {
@@ -81,7 +64,7 @@ class _NewPostState extends State<NewPost> {
                     ),
                   );
                 },
-              ),
+              ),*/
               const SizedBox(height: 16),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -111,7 +94,6 @@ class _NewPostState extends State<NewPost> {
     });
   }
 
-  /// Selection dialog that prompts the user to select an existing photo or take a new one
   Future _showSelectionDialog() async {
     await showDialog(
       context: context,

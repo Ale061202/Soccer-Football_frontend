@@ -8,10 +8,8 @@ class User {
   String? first_name;
   String? last_name;
   String? phone;
-  String? birthday;
   String? email;
   String? token;
-  List<String>? roles;
   List<Posts>? posts;
 
   User(
@@ -20,11 +18,9 @@ class User {
       this.avatar,
       this.first_name,
       this.last_name,
-      this.birthday,
       this.email,
       this.phone,
       this.token,
-      this.roles,
       this.posts}
   );
 
@@ -34,14 +30,12 @@ class User {
     email = json['email'];
     avatar = json['avatar'];
     phone = json['phone'];
-    birthday = json['birthday'];
     if (json['myPost'] != null) {
       posts = <Posts>[];
       json['posts'].forEach((v) {
         posts!.add(new Posts.fromJson(v));
       });
     }
-    roles = json['roles'].cast<String>();
     token = json['token'];
   }
 
@@ -52,11 +46,9 @@ class User {
     data['email'] = this.email;
     data['avatar'] = this.avatar;
     data['phone'] = this.phone;
-    data['birthday'] = this.birthday;
     if (this.posts != null) {
       data['posts'] = posts!.map((v) => v.toJson()).toList();
     }
-    data['roles'] = this.roles;
     data['token'] = this.token;
     return data;
   }  
@@ -70,12 +62,10 @@ class UserResponse extends User {
             first_name: first_name,
             last_name: last_name,
             avatar: avatar,
-            birthday: birthday,
             phone: phone,
             token: token,
             email: email,
             posts: posts,
-            roles: roles
           );
 
   UserResponse.fromJson(Map<String, dynamic> json) {
@@ -83,11 +73,9 @@ class UserResponse extends User {
     username = json['username'];
     email = json['email'];
     phone = json['phone'];
-    birthday = json['birthday'];
     posts = (json['posts'] as List<dynamic>)
         .map((e) => Posts.fromJson(e))
         .toList();
-    roles = (json['roles'] as List<dynamic>).cast<String>();
     avatar = json['avatar'];
     token = json['token'];
   }
@@ -97,9 +85,7 @@ class UserResponse extends User {
     data['username'] = username;
     data['email'] = email;
     data['phone'] = phone;
-    data['birthday'] = birthday;
     data['posts'] = posts;
-    data['roles'] = roles;
     data['avatar'] = avatar;
     data['token'] = token;
     return data;

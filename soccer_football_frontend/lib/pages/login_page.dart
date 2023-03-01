@@ -150,7 +150,7 @@ class __SignInFormState extends State<_SignInForm> {
                   SizedBox(height: 30),
                   TextFormField(
                     decoration: InputDecoration(
-                      labelText: 'Username',
+                      labelText: 'Email',
                       filled: true,
                       isDense: true,
                     ),
@@ -182,7 +182,7 @@ class __SignInFormState extends State<_SignInForm> {
                   TextButton(
                       child: Text(
                         '¿You do not have count? Register now',
-                        style: TextStyle(color: Colors.brown),
+                        style: TextStyle(color: Colors.black),
                       ),
                       onPressed: () => Navigator.push(
                             context,
@@ -219,12 +219,12 @@ class __SignInFormState extends State<_SignInForm> {
       content: Text(
         error,
         style: TextStyle(
-            color: Color.fromARGB(255, 247, 247, 247),
+            color: Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.bold),
         textAlign: TextAlign.center,
       ),
-      backgroundColor: Color.fromARGB(255, 6, 12, 100),
+      backgroundColor: Colors.blue,
     ));
   }
 }
@@ -234,6 +234,30 @@ class RegisterFormBloc extends FormBloc<String, String> {
     validators: [
       FieldBlocValidators.required,
       FieldBlocValidators.email,
+    ],
+  );
+
+  final first_name = TextFieldBloc(
+    validators: [
+      FieldBlocValidators.required,
+    ],
+  ); 
+
+  final last_name = TextFieldBloc(
+    validators: [
+      FieldBlocValidators.required,
+    ],
+  );
+
+  final avatar = TextFieldBloc(
+    validators: [
+      FieldBlocValidators.required,
+    ],
+  );
+
+  final birthday = TextFieldBloc(
+    validators: [
+      FieldBlocValidators.required,
     ],
   );
 
@@ -275,7 +299,10 @@ class RegisterFormBloc extends FormBloc<String, String> {
         username,
         phone,
         password,
-        varifyPassword,
+        last_name,
+        first_name,
+        avatar,
+        birthday,
         showSuccessResponse,
       ],
     );
@@ -287,15 +314,18 @@ class RegisterFormBloc extends FormBloc<String, String> {
     debugPrint(username.value);
     debugPrint(phone.value);
     debugPrint(password.value);
-    debugPrint(varifyPassword.value);
+    debugPrint(first_name.value);
+    debugPrint(last_name.value);
+    debugPrint(avatar.value);
+    debugPrint(birthday.value);
     debugPrint(showSuccessResponse.value.toString());
 
     RegisterRepository().doRegister(username.value, email.value, phone.value,
-        password.value, varifyPassword.value);
+        password.value, first_name.value, last_name.value, avatar.value, birthday.value);
     await Future<void>.delayed(const Duration(seconds: 2));
 
     final response = await RegisterRepository().doRegister(username.value,
-        email.value, phone.value, password.value, varifyPassword.value);
+        email.value, phone.value, password.value, first_name.value, last_name.value, avatar.value, birthday.value);
 
     if (response.statusCode != 400 ) {
       emitSuccess();
@@ -389,6 +419,65 @@ class RegisterForm extends StatelessWidget {
                         ),
                         const SizedBox(height: 20.0),
                         TextFieldBlocBuilder(
+                          textFieldBloc: regFormBloc.first_name,
+                          keyboardType: TextInputType.name,
+                          autofillHints: const [
+                            AutofillHints.username,
+                          ],
+                          decoration: InputDecoration(
+                            labelText: 'First Name',
+                            prefixIcon:
+                                const Icon(Icons.person, color: Colors.green),
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                        ),const SizedBox(height: 20.0),
+                        TextFieldBlocBuilder(
+                          textFieldBloc: regFormBloc.last_name,
+                          keyboardType: TextInputType.name,
+                          autofillHints: const [
+                            AutofillHints.username,
+                          ],
+                          decoration: InputDecoration(
+                            labelText: 'Last Name',
+                            prefixIcon:
+                                const Icon(Icons.person, color: Colors.green),
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 20.0),
+                        TextFieldBlocBuilder(
+                          textFieldBloc: regFormBloc.avatar,
+                          keyboardType: TextInputType.name,
+                          autofillHints: const [
+                            AutofillHints.username,
+                          ],
+                          decoration: InputDecoration(
+                            labelText: 'Avatar',
+                            prefixIcon:
+                                const Icon(Icons.person_outlined, color: Colors.green),
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 20.0),
+                        TextFieldBlocBuilder(
+                          textFieldBloc: regFormBloc.birthday,
+                          keyboardType: TextInputType.datetime,
+                          autofillHints: const [
+                            AutofillHints.username,
+                          ],
+                          decoration: InputDecoration(
+                            labelText: 'Birthday',
+                            prefixIcon:
+                                const Icon(Icons.cake_outlined, color: Colors.green),
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 20.0),
+                        TextFieldBlocBuilder(
                           textFieldBloc: regFormBloc.phone,
                           keyboardType: TextInputType.phone,
                           autofillHints: const [
@@ -414,20 +503,7 @@ class RegisterForm extends StatelessWidget {
                             filled: true,
                             fillColor: Colors.white,
                           ),
-                        ),
-                        const SizedBox(height: 20.0),
-                        TextFieldBlocBuilder(
-                          textFieldBloc: regFormBloc.varifyPassword,
-                          suffixButton: SuffixButton.obscureText,
-                          autofillHints: const [AutofillHints.password],
-                          decoration: InputDecoration(
-                            labelText: 'Verify Password',
-                            prefixIcon:
-                                const Icon(Icons.lock, color: Colors.green),
-                            filled: true,
-                            fillColor: Colors.white,
-                          ),
-                        ),
+                        ),                        
                         const SizedBox(height: 20.0),
                         ElevatedButton(
                           onPressed: regFormBloc.submit,

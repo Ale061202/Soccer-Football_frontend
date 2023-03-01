@@ -9,7 +9,7 @@ class RegisterRepository {
 
 
   Future<http.Response> doRegister(String username, String email, String phone,
-      String password, String avatar, String first_name, String last_name, String birthday) async {
+      String password, String avatar, String first_name, String last_name) async {
     final response = await http.post(Uri.parse(url_base),
         headers: {
           'Content-Type': 'application/json',
@@ -23,7 +23,6 @@ class RegisterRepository {
           first_name: first_name,
           last_name: last_name,
           avatar: avatar,
-          birthday: birthday
         )));
     print(response.body);
     return response;

@@ -255,12 +255,6 @@ class RegisterFormBloc extends FormBloc<String, String> {
     ],
   );
 
-  final birthday = TextFieldBloc(
-    validators: [
-      FieldBlocValidators.required,
-    ],
-  );
-
   final username = TextFieldBloc(
     validators: [
       FieldBlocValidators.required,
@@ -286,10 +280,6 @@ class RegisterFormBloc extends FormBloc<String, String> {
     ],
   );
 
-  final varifyPassword = TextFieldBloc(validators: [
-    FieldBlocValidators.required,
-  ]);
-
   final showSuccessResponse = BooleanFieldBloc();
 
   RegisterFormBloc() {
@@ -302,7 +292,6 @@ class RegisterFormBloc extends FormBloc<String, String> {
         last_name,
         first_name,
         avatar,
-        birthday,
         showSuccessResponse,
       ],
     );
@@ -317,15 +306,14 @@ class RegisterFormBloc extends FormBloc<String, String> {
     debugPrint(first_name.value);
     debugPrint(last_name.value);
     debugPrint(avatar.value);
-    debugPrint(birthday.value);
     debugPrint(showSuccessResponse.value.toString());
 
     RegisterRepository().doRegister(username.value, email.value, phone.value,
-        password.value, first_name.value, last_name.value, avatar.value, birthday.value);
+        password.value, first_name.value, last_name.value, avatar.value);
     await Future<void>.delayed(const Duration(seconds: 2));
 
     final response = await RegisterRepository().doRegister(username.value,
-        email.value, phone.value, password.value, first_name.value, last_name.value, avatar.value, birthday.value);
+        email.value, phone.value, password.value, first_name.value, last_name.value, avatar.value);
 
     if (response.statusCode != 400 ) {
       emitSuccess();

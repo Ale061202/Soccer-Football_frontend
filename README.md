@@ -16,4 +16,5 @@ Además de incluír una lógica de negocio de una mezcla entre ambas.
  ### USER
  - username: ale1234
  - password: 1234
+ 
 De momento solo se puede logear con el rol de usuario
